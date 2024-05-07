@@ -5,7 +5,9 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: 'https://main--mytubeone.netlify.app'
+}));
 
 mongoose.connect('mongodb+srv://GabrielGarcia:G1234567@proyecto1.yjyznsb.mongodb.net/Proyecto');
 
