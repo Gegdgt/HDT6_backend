@@ -1,12 +1,9 @@
-import serverless from "serverless-http";
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const signin = require('./routes/signin.js');
-const Video = require('./routes/home.js');
-const Comment = require('./routes/comment.js');
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(cors());
 
@@ -215,3 +212,17 @@ app.post('/videos/:videoId/comments', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
+
+module.exports.handler = async (event, context) => {
+  return await new Promise((resolve, reject) => {
+    const handler = serverless(app);
+    const callback = (error, body) => {
+      const response = {
+        statusCode: 200,
+        body: JSON.stringify(body)
+      };
+      resolve(response);
+    };
+    handler(event, context, callback);
+  });
+};
