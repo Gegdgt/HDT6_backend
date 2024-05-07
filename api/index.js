@@ -3,11 +3,17 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const signin = require('./routes/signin'); // asegúrate de ajustar el modelo correctamente
+const Video = require('./routes/home');  // asegúrate de ajustar el modelo correctamente
+
+const corsOptions = {
+  origin: 'https://mytubeone.netlify.app',
+  optionsSuccessStatus: 200
+
+};
 
 app.use(express.json());
-app.use(cors({
-  origin: 'https://main--mytubeone.netlify.app'
-}));
+app.use(cors(corsOptions));
 
 mongoose.connect('mongodb+srv://GabrielGarcia:G1234567@proyecto1.yjyznsb.mongodb.net/Proyecto');
 
@@ -215,16 +221,8 @@ app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
-module.exports.handler = async (event, context) => {
-  return await new Promise((resolve, reject) => {
-    const handler = serverless(app);
-    const callback = (error, body) => {
-      const response = {
-        statusCode: 200,
-        body: JSON.stringify(body)
-      };
-      resolve(response);
-    };
-    handler(event, context, callback);
-  });
-};
+app.get('/health', (req, res) => {
+  res.send("Server is healthy!");
+});
+
+module.exports = app;
