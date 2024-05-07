@@ -11,7 +11,7 @@ app.use(cors({
 
 mongoose.connect('mongodb+srv://GabrielGarcia:G1234567@proyecto1.yjyznsb.mongodb.net/Proyecto');
 
-app.use('/login', (req, res) => {
+app.use('/login', cors(), (req, res) => {
   const { username, password } = req.body;
   signin.findOne({ username: username })
     .then(Usuarios => {
